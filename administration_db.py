@@ -80,7 +80,7 @@ class AdminDB:
         :param table_name: table name in database
         :param table: table from the previously read file
         '''
-        for row, row_number in zip(table['data'], range(1, len(table['data'])+1)):
+        for row_number, row in enumerate(table['data'], 1):
             for value in table['structure']:
                 if value == table['structure'][0]:
                     self.cur.execute('INSERT INTO {}({}) VALUES ("{}")'
@@ -100,7 +100,6 @@ class AdminDB:
     def read_from(self, table_name):
         self.cur.execute('SELECT * FROM  {}'.format(table_name))
         return self.dictfetchall()
-
 
 
     def close_connection(self):

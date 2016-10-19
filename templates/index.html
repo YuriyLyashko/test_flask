@@ -37,15 +37,16 @@
     </head>
     <body>
         <h1 align="center" alt="Test">{{selected_region}}</h1>
+
         <form method="post" align="center">
             <select name="name_selected">
                 {% for region in regions %}
             <option value="{{ region.name }}">{{ region.name }}</option>
                 {% endfor %}
             </select>
-        <input type="submit" value="Отобрать">
+        <input type="submit" value="Show">
         </form>
-
+        <p>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/data.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -60,7 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for d in data %}
+                {% for d in data_for_region %}
                 <tr>
                     <th>{{d[0]}}</th>
                     <td>{{d[1]}}</td>

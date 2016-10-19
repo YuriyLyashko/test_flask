@@ -1,0 +1,4 @@
+/proj/*
+*.csv
+*.json
+*.xls

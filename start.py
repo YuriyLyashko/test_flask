@@ -4,12 +4,12 @@ from parser import read
 import administration_db
 
 
-file = 'eFw3Cefj.json'
+incoming_file = 'eFw3Cefj.json'
 db = 'test'
 
-table = read(file)
+table = read(incoming_file)
 
-adm_db = administration_db.AdminDB(table, file)
+adm_db = administration_db.AdminDB(table, incoming_file)
 
 try:
     adm_db.connect_db(db)
@@ -30,7 +30,6 @@ finally:
         table_from_db = adm_db.read_from(adm_db.name_table_data)
         adm_db.close_connection()
 
-print(table_from_db)
 
 def get_regions():
     regions = []
@@ -40,21 +39,19 @@ def get_regions():
             regions.append({'name': name})
     return regions
 
+
+def get_data_for_region(name):
+    data_for_region = []
+    for row in table_from_db:
+        if row[adm_db.table['structure'][0]] == name:
+            data_for_region.append([row[adm_db.table['structure'][1]], int(float(row[adm_db.table['structure'][2]]))])
+    return data_for_region
+
+
 regions = get_regions()
 
 
-def get_data_for_region(name):
-    data = []
-    print(name)
-    for row in table_from_db:
-        if row[adm_db.table['structure'][0]] == name:
-            data.append([row[adm_db.table['structure'][1]], int(float(row[adm_db.table['structure'][2]]))])
-    return data
-
-
-
-
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flask import Flask, request, render_template
 
 
 app = Flask(__name__)
@@ -69,8 +66,8 @@ def index():
 def test():
     if request.method == 'POST':
         selected_region = request.form.get('name_selected')
-        data = get_data_for_region(selected_region)
-        return render_template('index.html', regions=regions, data=data, selected_region=selected_region)
+        data_for_region = get_data_for_region(selected_region)
+        return render_template('index.html', regions=regions, data_for_region=data_for_region, selected_region=selected_region)
 
 
 if __name__ == '__main__':

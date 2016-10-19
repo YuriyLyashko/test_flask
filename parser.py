@@ -1,7 +1,7 @@
-import json, csv, xlrd, re
+import json, csv, xlrd, os
 
 
-def get_extension(file):
+def get_extension(incoming_file):
     '''
     Get extension from incoming file
     :param file: incoming file
@@ -11,10 +11,10 @@ def get_extension(file):
     >>> get_extension('qwerty.doc')
     'doc'
     '''
-    return re.search(r'[.]\w{2,}', file).group(0)[1:]
+    return os.path.splitext(incoming_file)[1][1:]
 
 
-def read_json(file):
+def read_json(incoming_file):
     '''
     Read from incoming JSON file
     :param file: incoming file
@@ -22,11 +22,11 @@ def read_json(file):
     >>> read_json('eFw3Cefj.json') #doctest: +ELLIPSIS
     {...}
     '''
-    with open(file) as json_data:
+    with open(incoming_file) as json_data:
         return json.load(json_data)
 
 
-def read_csv(file):
+def read_csv(incoming_file):
     '''
     Read from incoming CSV file
     :param file: incoming file
@@ -34,14 +34,14 @@ def read_csv(file):
     >>> read_csv('eFw3Cefj.csv') #doctest: +ELLIPSIS
     {...}
     '''
-    with open(file) as csv_file:
+    with open(incoming_file) as csv_file:
         reader = csv.DictReader(csv_file)
         data = [row for row in reader]
         structure = [key for key in data[0].keys()]
         return {'structure': structure, 'data': data}
 
 
-def read_xls(file):
+def read_xls(incoming_file):
     '''
     Read from incoming XLS file
     :param file: incoming file
@@ -50,7 +50,7 @@ def read_xls(file):
     {...}
     '''
     data = []
-    rb = xlrd.open_workbook(file, formatting_info=True)
+    rb = xlrd.open_workbook(incoming_file, formatting_info=True)
     sheet = rb.sheet_by_index(0)
     for rownum in range(sheet.nrows):
         row = sheet.row_values(rownum)
@@ -71,7 +71,7 @@ support_extensions = {
 }
 
 
-def read(file):
+def read(incoming_file):
     '''
     Reading data from incoming file
     :param file: incoming file
@@ -83,10 +83,10 @@ def read(file):
     >>> read('eFw3Cefj.xls') #doctest: +ELLIPSIS
     {...}
     '''
-    file_extension = get_extension(file)
+    file_extension = get_extension(incoming_file)
     if file_extension not in support_extensions:
         raise ValueError('not supported file_extension')
-    return support_extensions[file_extension](file)
+    return support_extensions[file_extension](incoming_file)
 
 
 
