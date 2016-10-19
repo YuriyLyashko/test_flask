@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>test</title>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+		    ${demo.css}
+		</style>
+		<script type="text/javascript">
+            $(function () {
+                $('#container').highcharts({
+                    data: {
+                        table: 'datatable'
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    yAxis: {
+                        allowDecimals: false,
+                        title: {
+                            text: 'Units'
+                        }
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            return '<b>' + this.series.name + '</b><br/>' +
+                                this.point.y + ' ' + this.point.name.toLowerCase();
+                        }
+                    }
+                });
+            });
+	    </script>
+    </head>
+    <body>
+        <h1 align="center" alt="Test">{{selected_region}}</h1>
+        <form method="post" align="center">
+            <select name="name_selected">
+                {% for region in regions %}
+            <option value="{{ region.name }}">{{ region.name }}</option>
+                {% endfor %}
+            </select>
+        <input type="submit" value="Отобрать">
+        </form>
+
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+        <table id="datatable" style="display:none">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Values</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in data %}
+                <tr>
+                    <th>{{d[0]}}</th>
+                    <td>{{d[1]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
