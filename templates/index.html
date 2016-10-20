@@ -36,17 +36,20 @@
 	    </script>
     </head>
     <body>
-        <h1 align="center" alt="Test">{{selected_region}}</h1>
+
+        <p></p>
 
         <form method="post" align="center">
             <select name="name_selected">
+                <option>{{selected_region}}</option>
                 {% for region in regions %}
-            <option value="{{ region.name }}">{{ region.name }}</option>
+                <option value="{{ region.name }}">{{ region.name }}</option>
                 {% endfor %}
             </select>
         <input type="submit" value="Show">
         </form>
-        <p>
+        <p></p>
+        <h1 align="center" >{{selected_region}}</h1>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/data.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>

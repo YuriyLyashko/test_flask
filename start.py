@@ -49,7 +49,7 @@ def get_data_for_region(name):
 
 
 regions = get_regions()
-
+selected_region = 'Please select a region'
 
 from flask import Flask, request, render_template
 
@@ -59,7 +59,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', regions=regions)
+    return render_template('index.html', regions=regions, selected_region=selected_region)
 
 
 @app.route('/', methods=['POST'])
