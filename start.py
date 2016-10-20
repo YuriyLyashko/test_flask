@@ -50,6 +50,7 @@ def get_data_for_region(name):
 
 regions = get_regions()
 selected_region = 'Please select a region'
+select_separator = '--'*max([len(region['name']) for region in regions])
 
 from flask import Flask, request, render_template
 
@@ -59,7 +60,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', regions=regions, selected_region=selected_region)
+    return render_template('index.html',
+                           regions=regions, selected_region=selected_region, select_separator=select_separator)
 
 
 @app.route('/', methods=['POST'])
@@ -67,7 +69,9 @@ def test():
     if request.method == 'POST':
         selected_region = request.form.get('name_selected')
         data_for_region = get_data_for_region(selected_region)
-        return render_template('index.html', regions=regions, data_for_region=data_for_region, selected_region=selected_region)
+        return render_template('index.html',
+                               regions=regions, data_for_region=data_for_region, selected_region=selected_region,
+                               select_separator=select_separator)
 
 
 if __name__ == '__main__':

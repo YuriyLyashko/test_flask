@@ -42,6 +42,7 @@
         <form method="post" align="center">
             <select name="name_selected">
                 <option>{{selected_region}}</option>
+                <option disabled>{{select_separator}}</option>
                 {% for region in regions %}
                 <option value="{{ region.name }}">{{ region.name }}</option>
                 {% endfor %}
